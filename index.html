@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Il vaso greco</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE everyday, a lively art lesson for 11-year-olds, shown on the classroom board
+   IDEA the page behaves like a red-figure vase: black fields, terracotta figures, meander borders
+   PICTURE a large painted vase drawn live by the same engine as the vase designer
+   COLOUR white ground, vase black #17100c, terracotta #c95a26, Aegean blue accent #1f5fbf
+   TYPE Marcellus (inscription-like) + Nunito
+   LAYOUT laptop: black hero with title left and vase right, meander strip, then sections; phone: stacked */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#120c09);--ink:light-dark(#1b1310,#f6e8da);--soft:light-dark(#6b5a50,#c9b4a4);--terra:light-dark(#c95a26,#e5793f);--black:#17100c;--clay:#d4692f;--blue:light-dark(#1f5fbf,#7fb0ff);--panel:light-dark(#fbf1e8,#1e1511);--line:light-dark(#ecd9c8,#3a2a21);--ok:light-dark(#1d7a46,#5fd393);--bad:light-dark(#c0392b,#ff7b6b)}
+:root[data-theme=light]{color-scheme:light}
+:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0}
+html{scroll-padding-top:20px}
+body{background:var(--bg);color:var(--ink);font:17px/1.6 Nunito,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:Marcellus,Georgia,serif;font-weight:400;line-height:1.08;letter-spacing:-.01em;margin:0;text-wrap:balance}
+h2{font-size:clamp(30px,4.4vw,44px);margin-bottom:10px}
+h3{font-size:23px}
+p{margin:0 0 12px}
+.band{padding-block:clamp(28px,4vw,60px);padding-inline:max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+.hero{background:var(--black);color:#f3dcc6}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(20px,4vw,56px);align-items:center}
+.hero h1{font-size:clamp(42px,6.5vw,72px);color:var(--clay)}
+.hero .lead{font-size:19px;max-width:52ch;margin-top:14px}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:22px}
+.facts div{border:1px solid #4a3326;border-radius:14px;padding:12px}
+.facts b{display:block;font:400 26px Marcellus,serif;color:var(--clay)}
+.facts span{font-size:14px;color:#d9c2ae}
+.stage{position:relative}
+.stage svg{display:block;width:100%;max-height:560px}
+.meander{display:block;width:100%;height:30px;background:var(--black)}
+.nav{display:flex;gap:8px;overflow-x:auto;padding:12px max(5vw,16px);border-bottom:1px solid var(--line);background:var(--bg)}
+.nav a{flex:none;color:var(--ink);text-decoration:none;font-weight:700;font-size:15px;padding:8px 14px;border-radius:999px;background:var(--panel)}
+.nav a:hover{background:var(--terra);color:#fff}
+@media(min-width:900px){.nav{position:sticky;top:0;z-index:5}}
+.intro{color:var(--soft);max-width:68ch;margin-bottom:24px}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,3vw,40px);align-items:start}
+.uses{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px}
+.card h3{font-size:21px;margin-bottom:6px;color:var(--terra)}
+.card p{margin:0;font-size:16px}
+.tip{margin-top:18px;padding:16px 18px;border-radius:14px;background:var(--black);color:#f3dcc6}
+.tip b{color:var(--clay)}
+.anat{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:24px;align-items:center}
+.anat svg{width:100%;max-height:440px;display:block}
+.legend{list-style:none;margin:0;padding:0;counter-reset:n}
+.legend li{display:flex;gap:12px;align-items:baseline;padding:9px 0;border-top:1px solid var(--line)}
+.legend .dot{flex:none;width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;font-weight:800;display:grid;place-items:center;font-size:14px;transform:translateY(5px)}
+:root[data-theme=dark] .legend .dot{color:#0b1530}
+.forms{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,180px),1fr));gap:14px}
+.form{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column}
+.form svg{width:100%;height:170px;display:block}
+.form h3{font-size:22px}
+.form .pr{font-size:14px;color:var(--soft);margin-bottom:6px}
+.tag{display:inline-block;font-size:13px;font-weight:800;color:#fff;background:var(--terra);border-radius:999px;padding:1px 10px;margin-bottom:8px;align-self:flex-start}
+.form p{font-size:15px;margin:0 0 10px;flex:1}
+.btn{min-height:44px;padding:8px 16px;border-radius:12px;border:2px solid var(--terra);background:transparent;color:var(--ink);font:700 16px Nunito,sans-serif;cursor:pointer}
+.btn:hover{background:color-mix(in srgb,var(--terra) 14%,transparent)}
+.btn.fill{background:var(--terra);color:#fff}
+button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.timeline{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.era{border-radius:18px;padding:18px;display:flex;flex-direction:column}
+.era svg{width:100%;height:220px;display:block;margin-bottom:8px}
+.era .when{font-weight:800;font-size:15px}
+.era h3{font-size:25px;margin:2px 0 8px}
+.era p{font-size:15.5px;margin:0}
+.e1{background:#f1dcc0;color:#2b1a10}
+.e2{background:#d4692f;color:#17100c}
+.e3{background:#17100c;color:#f3dcc6}.e3 h3,.e3 .when{color:#e5793f}
+.how{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:18px}
+.how ol{margin:8px 0 0;padding-left:20px}
+.how li{margin-bottom:6px}
+.famous{margin-top:16px}
+.decos{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:14px}
+.deco{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px}
+.deco svg{display:block;width:100%;height:46px;border-radius:6px;margin-bottom:10px}
+.deco h3{font-size:20px}
+.deco p{font-size:15px;margin:2px 0 0}
+.mz{margin-top:26px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:20px;align-items:center}
+.mz svg{width:100%;display:block;background:#fff;border-radius:12px;border:1px solid var(--line)}
+.mz .stepnote{font-weight:700;min-height:3.2em}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;counter-reset:s}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px}
+.step svg{display:block;width:100%;height:230px;background:#fff;border-radius:10px}
+.step h3{font-size:20px;margin:10px 0 4px}
+.step h3::before{counter-increment:s;content:counter(s) ". ";color:var(--terra)}
+.step p{font-size:15.5px;margin:0}
+.mat{columns:2 220px;margin:0;padding-left:20px}
+.lab{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(18px,3vw,40px);align-items:start}
+.lab .stage{background:var(--black);border-radius:20px;padding:10px}
+.lab .stage svg{max-height:520px;margin:0 auto}
+@media(min-width:900px){.lab .stage{position:sticky;top:70px}}
+.ctl{margin-bottom:16px}
+.ctl label,.ctl .lbl{display:block;font-weight:800;margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{min-height:44px;padding:6px 14px;border-radius:999px;border:2px solid var(--line);background:var(--bg);color:var(--ink);font:700 15px Nunito,sans-serif;cursor:pointer}
+.chips button[aria-pressed=true]{border-color:var(--terra);background:var(--terra);color:#fff}
+select{width:100%;min-height:44px;font:16px Nunito,sans-serif;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:6px 10px}
+select:disabled{opacity:.45}
+.sel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.scheda{margin-top:16px;padding:16px;border-radius:14px;border:2px dashed var(--terra)}
+.scheda b{color:var(--terra)}
+.q{padding:14px 0;border-top:1px solid var(--line)}
+.q .s{font-weight:700;margin-bottom:10px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opts button{min-height:44px;padding:8px 14px;border-radius:12px;border:2px solid var(--blue);background:transparent;color:var(--ink);font:700 15.5px Nunito,sans-serif;cursor:pointer;text-align:left}
+.opts button.right{background:var(--ok);border-color:var(--ok);color:#fff}
+.opts button.wrong{background:var(--bad);border-color:var(--bad);color:#fff}
+.fb{margin:8px 0 0;font-size:15px;min-height:1.3em}
+.fb.good{color:var(--ok)}.fb.bad{color:var(--bad)}
+.score{font:400 24px Marcellus,serif;background:var(--terra);color:#fff;border-radius:14px;padding:6px 16px}
+.qhead{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15.5px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--soft);font-weight:800}
+td:first-child{font-weight:800}
+.tp{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}
+.tp ul{padding-left:20px;margin:6px 0 0}
+.time{list-style:none;padding:0;margin:6px 0 0}
+.time li{display:grid;grid-template-columns:4.5em minmax(0,1fr);gap:8px;padding:6px 0;border-top:1px solid var(--line)}
+.time b{white-space:nowrap;color:var(--terra)}
+.src a{color:var(--blue)}
+.foot{color:var(--soft);font-size:14px;border-top:1px solid var(--line)}
+@media(max-width:900px){.timeline{grid-template-columns:minmax(0,1fr)}.era{display:grid;grid-template-columns:150px minmax(0,1fr);gap:14px}.era svg{height:200px;grid-row:span 4}.steps{grid-template-columns:repeat(2,minmax(0,1fr))}.lab{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:700px){.hero-grid,.grid2,.anat,.mz,.how,.tp{grid-template-columns:minmax(0,1fr)}.stage svg{max-height:380px}.anat svg{max-height:340px}}
+@media(max-width:600px){.facts{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)}.facts b{font-size:21px}.steps{grid-template-columns:minmax(0,1fr)}.sel{grid-template-columns:minmax(0,1fr)}.era{grid-template-columns:110px minmax(0,1fr)}table{font-size:14px}th,td{padding:8px 6px}}
+@media(prefers-reduced-motion:no-preference){#heroVase{animation:rise .9s ease-out both}@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}}
+</style>
+</head>
+<body>
+
+<header class="band hero">
+  <div class="wrap hero-grid">
+    <div>
+      <h1>Il vaso greco</h1>
+      <p class="lead">Forme, colori e decorazioni dei vasi dell’antica Grecia. Prima li osserviamo come archeologi, poi li disegniamo come i vasai di Atene.</p>
+      <div class="facts">
+        <div><b>6</b><span>forme da riconoscere</span></div>
+        <div><b>3</b><span>stili nel tempo</span></div>
+        <div><b>1</b><span>vaso da progettare e disegnare</span></div>
+      </div>
+      <p style="margin-top:18px;font-size:15px;color:#d9c2ae">Educazione artistica · classe prima · due ore di lezione</p>
+    </div>
+    <div class="stage"><svg id="heroVase" viewBox="0 0 200 300" role="img" aria-label="Anfora a figure nere con una civetta"></svg></div>
+  </div>
+</header>
+<svg class="meander" id="meanderStrip" aria-hidden="true"></svg>
+
+<nav class="nav" aria-label="Sezioni">
+  <a href="#usi">A cosa servivano</a><a href="#forme">Le forme</a><a href="#stili">Gli stili</a><a href="#decorazioni">Le decorazioni</a><a href="#disegno">Disegniamo</a><a href="#laboratorio">Progetta il tuo vaso</a><a href="#verifica">Verifica</a><a href="#docente">Per l’insegnante</a>
+</nav>
+
+<section class="band" id="usi">
+  <div class="wrap grid2">
+    <div>
+      <h2>A cosa servivano i vasi?</h2>
+      <p class="intro">I Greci non avevano bottiglie di plastica né barattoli di vetro: per conservare, trasportare e servire quasi tutto usavano vasi di terracotta. Per ogni uso c’era una forma diversa.</p>
+      <div class="uses">
+        <div class="card"><h3>Trasporto</h3><p>Vasi grandi per vino, olio, acqua e grano: l’anfora e l’hydria.</p></div>
+        <div class="card"><h3>Mensa</h3><p>Vasi da tavola per mescolare, versare e bere: cratere, oinochoe, kylix.</p></div>
+        <div class="card"><h3>Toeletta</h3><p>Vasetti piccoli per profumi e oli per il corpo.</p></div>
+        <div class="card"><h3>Riti</h3><p>Vasi usati nelle cerimonie e portati sulle tombe, come la lekythos.</p></div>
+      </div>
+      <div class="tip"><b>Lo sapevi?</b> Ad Atene c’era un intero quartiere di vasai, il Ceramico. Produceva così tanti vasi che li vendeva fino in Etruria e in Magna Grecia, cioè anche in Italia. Dal suo nome viene la nostra parola <b>ceramica</b>.</div>
+    </div>
+    <div>
+      <h2>Le parti del vaso</h2>
+      <p class="intro">I vasai davano un nome a ogni parte, come se il vaso fosse un corpo.</p>
+      <div class="anat">
+        <svg id="anatomy" viewBox="0 0 200 300" role="img" aria-label="Anfora con le parti numerate"></svg>
+        <ol class="legend">
+          <li><span class="dot">1</span><span><b>Bocca e orlo</b>: l’apertura in alto.</span></li>
+          <li><span class="dot">2</span><span><b>Collo</b>: la parte stretta sotto la bocca.</span></li>
+          <li><span class="dot">3</span><span><b>Anse</b>: i manici, per sollevare il vaso.</span></li>
+          <li><span class="dot">4</span><span><b>Spalla</b>: dove il vaso comincia ad allargarsi.</span></li>
+          <li><span class="dot">5</span><span><b>Ventre</b> (o pancia): la parte più larga, con la scena principale.</span></li>
+          <li><span class="dot">6</span><span><b>Piede</b>: la base su cui il vaso sta in piedi.</span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="forme" style="background:var(--panel)">
+  <div class="wrap">
+    <h2>Sei forme da riconoscere</h2>
+    <p class="intro">Guarda la sagoma: spesso basta la forma per capire a che cosa serviva il vaso. Premi “Prova a disegnarlo” per usarlo nel laboratorio.</p>
+    <div class="forms" id="forms"></div>
+  </div>
+</section>
+
+<section class="band" id="stili">
+  <div class="wrap">
+    <h2>Tre stili, uno dopo l’altro</h2>
+    <p class="intro">In circa quattrocento anni i pittori di vasi hanno cambiato molto il loro modo di decorare. Guarda i colori: sono la prima cosa che ti fa riconoscere lo stile.</p>
+    <div class="timeline" id="timeline"></div>
+    <div class="how">
+      <div class="card"><h3>Come si faceva un vaso a figure nere</h3><ol>
+        <li>Il vasaio modella l’argilla sul tornio.</li>
+        <li>Il pittore dipinge le figure con una vernice che, cuocendo, diventa nera.</li>
+        <li>Con una punta gratta i dettagli (occhi, capelli, pieghe dei vestiti): sotto riappare l’arancione dell’argilla.</li>
+        <li>Il vaso cuoce nel forno: il fondo resta arancione, le figure diventano nere.</li>
+      </ol></div>
+      <div class="card"><h3>Come si faceva un vaso a figure rosse</h3><ol>
+        <li>Il pittore disegna il contorno delle figure.</li>
+        <li>Dipinge di nero <b>tutto lo sfondo</b>, lasciando le figure del colore dell’argilla.</li>
+        <li>I dettagli si dipingono con un pennello sottile, non si graffiano.</li>
+        <li>Risultato: figure più morbide e realistiche, con muscoli e pieghe dei vestiti.</li>
+      </ol></div>
+    </div>
+    <div class="tip famous"><b>Due capolavori da cercare:</b> l’anfora di <b>Exekias</b> con Achille e Aiace che giocano a dadi (figure nere, Musei Vaticani) e il <b>Vaso François</b>, un grande cratere a figure nere conservato al Museo Archeologico Nazionale di Firenze.</div>
+  </div>
+</section>
+
+<section class="band" id="decorazioni" style="background:var(--panel)">
+  <div class="wrap">
+    <h2>Le decorazioni</h2>
+    <p class="intro">Sopra e sotto la scena principale i pittori disegnavano <b>fasce decorative</b>: motivi semplici ripetuti tutto intorno al vaso. Sono il modo migliore per cominciare a decorare il tuo.</p>
+    <div class="decos" id="decos"></div>
+    <div class="mz">
+      <div><svg id="mzGrid" aria-label="Meandro disegnato su carta a quadretti"></svg></div>
+      <div>
+        <h3>Disegna il meandro sul quaderno a quadretti</h3>
+        <p class="stepnote" id="mzNote"></p>
+        <div class="row"><button class="btn fill" id="mzNext" type="button">Passo successivo</button><button class="btn" id="mzReset" type="button">Da capo</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="disegno">
+  <div class="wrap">
+    <h2>Disegniamo un’anfora, passo dopo passo</h2>
+    <p class="intro">Il segreto di un bel vaso è la <b>simmetria</b>: la parte destra è uguale alla sinistra, come allo specchio. Per questo si parte sempre da una linea verticale al centro del foglio.</p>
+    <div class="steps" id="steps"></div>
+    <div class="card" style="margin-top:18px">
+      <h3>Materiali</h3>
+      <ul class="mat"><li>Foglio da disegno (album F4)</li><li>Matita HB e gomma</li><li>Righello</li><li>Pastelli o tempere: arancione, marrone, nero</li><li>Pennarello nero a punta fine</li><li>Uno stuzzicadenti, per graffiare i dettagli</li></ul>
+      <p style="margin-top:10px"><b>Trucco della piega:</b> piega il foglio a metà in verticale. Disegna metà vaso con la matita premendo forte, poi richiudi il foglio e strofina con il dorso della matita. Quando lo riapri, trovi l’altra metà già ricalcata.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="laboratorio" style="background:var(--panel)">
+  <div class="wrap">
+    <h2>Progetta il tuo vaso</h2>
+    <p class="intro">Prima di disegnare sul foglio, scegli la forma, lo stile e le decorazioni. Quando il progetto ti piace, copia la scheda sul quaderno e disegnalo.</p>
+    <div class="lab">
+      <div class="stage"><svg id="labVase" viewBox="0 0 200 300" role="img" aria-label="Il tuo vaso"></svg></div>
+      <div>
+        <div class="ctl"><span class="lbl">Forma</span><div class="chips" id="cShape"></div></div>
+        <div class="ctl"><span class="lbl">Stile</span><div class="chips" id="cStyle"></div></div>
+        <div class="sel">
+          <div class="ctl"><label for="sNeck">Fascia del collo</label><select id="sNeck"></select></div>
+          <div class="ctl"><label for="sShoulder">Fascia della spalla</label><select id="sShoulder"></select></div>
+          <div class="ctl"><label for="sFrieze">Scena sul ventre</label><select id="sFrieze"></select></div>
+          <div class="ctl"><label for="sBase">Fascia in basso</label><select id="sBase"></select></div>
+        </div>
+        <div class="row"><button class="btn fill" id="rand" type="button">Sorprendimi</button><button class="btn" id="labReset" type="button">Ricomincia</button></div>
+        <div class="scheda" id="scheda"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="verifica">
+  <div class="wrap">
+    <div class="qhead"><h2>Verifica: sei un esperto di vasi?</h2><div class="row" style="margin:0"><span class="score" id="score">0 / 0</span><button class="btn" id="qReset" type="button">Ricomincia</button></div></div>
+    <div id="quiz"></div>
+  </div>
+</section>
+
+<section class="band" id="docente" style="background:var(--panel)">
+  <div class="wrap">
+    <h2>Per l’insegnante</h2>
+    <div class="tp">
+      <div>
+        <h3>Obiettivi</h3>
+        <ul><li>Riconoscere le principali forme dei vasi greci e la loro funzione.</li><li>Distinguere lo stile geometrico, a figure nere e a figure rosse.</li><li>Disegnare una forma simmetrica partendo da un asse.</li><li>Usare un motivo decorativo ripetuto in una fascia.</li></ul>
+        <h3 style="margin-top:18px">Tempi (due ore)</h3>
+        <ul class="time">
+          <li><b>20 min</b><span>Alla LIM: a cosa servivano, le parti del vaso, le forme.</span></li>
+          <li><b>15 min</b><span>Gli stili e le tecniche; il meandro sul quaderno a quadretti.</span></li>
+          <li><b>10 min</b><span>Ogni alunno progetta il suo vaso nel laboratorio e copia la scheda.</span></li>
+          <li><b>60 min</b><span>Disegno sul foglio: asse, sagoma, fasce, colore.</span></li>
+          <li><b>15 min</b><span>Verifica a squadre alla LIM e mostra dei lavori.</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Griglia di valutazione del disegno</h3>
+        <div class="scroll"><table>
+          <thead><tr><th>Criterio</th><th>Ottimo</th><th>Da migliorare</th></tr></thead>
+          <tbody>
+            <tr><td>Simmetria</td><td>Le due metà sono uguali.</td><td>Le due metà sono molto diverse.</td></tr>
+            <tr><td>Forma</td><td>Si riconosce il tipo di vaso.</td><td>La forma non corrisponde a nessun vaso.</td></tr>
+            <tr><td>Fasce</td><td>Motivi regolari e ripetuti bene.</td><td>Motivi irregolari o interrotti.</td></tr>
+            <tr><td>Colore</td><td>Colori coerenti con lo stile scelto.</td><td>Colori casuali.</td></tr>
+            <tr><td>Cura</td><td>Linee pulite, foglio ordinato.</td><td>Segni sporchi, cancellature.</td></tr>
+          </tbody>
+        </table></div>
+        <h3 style="margin-top:18px">Per approfondire (adatto all’età)</h3>
+        <ul class="src">
+          <li><a href="https://www.focusjunior.it/giochi/lavoretti/fj-lab-facciamo-un-vaso-greco/">Focus Junior: laboratorio “facciamo un vaso greco”</a>, con un vaso di terracotta vero, una figura da ricalcare e tempera nera. Ottimo come attività a casa.</li>
+          <li><a href="https://www.focusjunior.it/?p=102959">Focus Junior: alla scoperta dell’antica civiltà dei Greci</a></li>
+          <li><a href="https://www.didatticarte.it/storiadellarte/5a%20arte%20greca%20geometrica.pdf">didatticarte.it: l’arte greca geometrica</a>, scheda con la classificazione dei vasi per uso.</li>
+          <li><a href="https://www.rizzolieducation.it/content/uploads/2019/04/infografica-storia5a-1.pdf">Rizzoli Education: infografica sui vasi greci</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="band foot"><div class="wrap">Disegni e testi originali preparati per la lezione. Tutti i vasi della pagina sono disegnati dal programma: non sono fotografie di vasi reali.</div></footer>
+
+<script>
+{
+const f=n=>Math.round(n*10)/10;
+const PAL={
+ geo:{body:'#ecc89e',fig:'#3a2313',det:'#ecc89e',handle:'#3a2313',zone:null,out:'#3a2313',label:'geometrico'},
+ nere:{body:'#d4692f',fig:'#17100c',det:'#d4692f',handle:'#17100c',zone:'#17100c',out:'#120c09',label:'a figure nere'},
+ rosse:{body:'#17100c',fig:'#d4692f',det:'#17100c',handle:'#2a1a12',zone:'#17100c',out:'#9a5a38',label:'a figure rosse'}
+};
+const SH={
+ anfora:{n:'Anfora',pr:'àn-fo-ra',cat:'Trasporto',use:'Conservava e trasportava vino, olio e grano. Ad Atene anfore piene d’olio erano il premio per i vincitori dei Giochi Panatenaici.',
+  pts:[[26,18],[20,26],[17,40],[18,62],[40,82],[60,105],[66,135],[62,170],[50,205],[34,235],[22,255],[20,264],[30,272],[30,282]],
+  h:['M117,40 C152,36 158,76 146,96'],s:[],l:[],b:{neck:[30,62],shoulder:[84,104],frieze:[108,178],base:[208,240]},rim:28,foot:250},
+ hydria:{n:'Hydria',pr:'i-drì-a',cat:'Trasporto',use:'Serviva per prendere l’acqua alla fontana. Ha tre anse: due ai lati per sollevarla, una dietro per versare.',
+  pts:[[30,20],[22,28],[20,40],[22,66],[50,84],[66,105],[70,135],[64,175],[48,215],[30,245],[24,262],[32,272],[32,282]],
+  h:['M166,122 C192,118 194,150 168,150'],s:[],l:['M80,40 C40,30 24,76 46,92'],b:{neck:[30,64],shoulder:[84,110],frieze:[118,192],base:[218,246]},rim:28,foot:250},
+ cratere:{n:'Cratere',pr:'cra-tè-re',cat:'Mensa',use:'Grande vaso dalla bocca larga. Nei banchetti serviva per mescolare il vino con l’acqua.',
+  pts:[[82,30],[78,38],[70,70],[64,110],[60,150],[52,182],[36,202],[22,216],[20,236],[38,260],[42,272],[42,280]],
+  h:['M148,186 C178,190 186,162 170,152'],s:[],l:[],b:{neck:[38,62],shoulder:null,frieze:[70,165],base:[170,196]},rim:34,foot:208},
+ kylix:{n:'Kylix',pr:'kỳ-lix',cat:'Mensa',use:'Coppa larga e bassa con il piede, per bere il vino. Spesso è decorata anche all’interno, sul fondo.',
+  pts:[[96,122],[94,128],[86,148],[64,166],[34,176],[14,180],[11,200],[12,226],[40,248],[46,258],[46,264]],
+  h:['M188,136 C210,128 212,158 186,154'],s:[],l:[],b:{neck:[126,140],shoulder:null,frieze:[140,166],base:null},rim:124,foot:178},
+ lekythos:{n:'Lekythos',pr:'lè-ky-thos',cat:'Toeletta e riti',use:'Vaso stretto e alto per l’olio profumato. Si portava anche sulle tombe come dono.',
+  pts:[[18,24],[13,30],[10,40],[10,72],[34,84],[42,98],[44,120],[42,200],[36,236],[22,252],[18,260],[28,270],[28,280]],
+  h:[],s:['M110,46 C136,44 140,72 134,90'],l:[],b:{neck:null,shoulder:[82,104],frieze:[112,212],base:[220,240]},rim:76,foot:244},
+ oinochoe:{n:'Oinochoe',pr:'oi-no-chò-e',cat:'Mensa',use:'Brocca con una sola ansa: prendeva il vino dal cratere e lo versava nelle coppe.',
+  pts:[[24,28],[20,36],[16,52],[18,72],[46,108],[56,140],[54,180],[44,220],[30,248],[26,262],[32,272],[32,282]],
+  h:[],s:['M116,36 C160,4 176,84 146,116'],l:[],b:{neck:[40,72],shoulder:[100,124],frieze:[128,210],base:[222,246]},rim:34,foot:250}
+};
+const PAT={
+ meandro:{n:'Meandro (greca)',d:'Una linea che gira sempre ad angolo retto. Il nome viene dal fiume Meandro, pieno di curve.'},
+ onde:{n:'Onde',d:'Onde che si arrotolano una dopo l’altra, come il mare.'},
+ linguette:{n:'Linguette',d:'Forme arrotondate in fila, spesso sotto il collo o sulla spalla.'},
+ raggi:{n:'Raggi',d:'Triangoli appuntiti, di solito alla base del vaso.'},
+ scacchi:{n:'Scacchiera',d:'Quadratini alternati, tipici del periodo geometrico.'},
+ zigzag:{n:'Zigzag',d:'Una linea spezzata: semplice e veloce da disegnare.'},
+ rombi:{n:'Rombi',d:'Rombi in fila, a volte con un punto al centro.'},
+ puntini:{n:'Puntini',d:'Punti in fila, per riempire le fasce più strette.'}
+};
+const MOT={civetta:'civetta',ulivo:'ramo d’ulivo',cavalli:'cavalli geometrici',meandro:'meandro grande',onde:'onde grandi',nessuno:'nessuna scena'};
+
+function smooth(p){let d='';for(let i=0;i<p.length-1;i++){const a=p[i-1]||p[i],b=p[i],c=p[i+1],e=p[i+2]||c;d+=`C${f(b[0]+(c[0]-a[0])/6)},${f(b[1]+(c[1]-a[1])/6)} ${f(c[0]-(e[0]-b[0])/6)},${f(c[1]-(e[1]-b[1])/6)} ${c[0]},${c[1]}`}return d}
+function bodyD(sh){const R=sh.pts.map(([w,y])=>[100+w,y]),L=sh.pts.map(([w,y])=>[100-w,y]).reverse();return `M${L[L.length-1]} L${R[0]} ${smooth(R)} L${L[0]} ${smooth(L)} Z`}
+function halfD(sh){const R=sh.pts.map(([w,y])=>[100+w,y]);return `M${R[0]} ${smooth(R)}`}
+
+function tile(name,fg){
+ switch(name){
+  case 'meandro':return{w:10,g:`<path d="M0,9.2H10M1,9.2V1H8V7H4V4H6" fill="none" stroke="${fg}" stroke-width="1.3" stroke-linejoin="miter"/>`};
+  case 'onde':return{w:10,g:`<path d="M0,10V7.2C3,7.2 3,1.6 6,1.6C8.6,1.6 9,4.6 7.2,5C6,5.3 5.6,4 6.6,3.8C5,3.6 4.4,6 6.4,7C7.8,7.5 9,7.2 10,7.2V10Z" fill="${fg}"/>`};
+  case 'linguette':return{w:6,g:`<path d="M0.6,0H5.4V4.6A2.4,4.4 0 0 1 0.6,4.6Z" fill="${fg}"/>`};
+  case 'raggi':return{w:6,g:`<path d="M0,10L3,0.6L6,10Z" fill="${fg}"/>`};
+  case 'scacchi':return{w:10,g:`<rect width="5" height="5" fill="${fg}"/><rect x="5" y="5" width="5" height="5" fill="${fg}"/>`};
+  case 'zigzag':return{w:10,g:`<path d="M0,8L2.5,2L5,8L7.5,2L10,8" fill="none" stroke="${fg}" stroke-width="1.4"/>`};
+  case 'rombi':return{w:10,g:`<path d="M5,1.2L8.8,5L5,8.8L1.2,5Z" fill="none" stroke="${fg}" stroke-width="1.2"/><circle cx="5" cy="5" r="1" fill="${fg}"/>`};
+  case 'puntini':return{w:5,g:`<circle cx="2.5" cy="5" r="1.3" fill="${fg}"/>`};
+ }
+ return null;
+}
+function band(id,name,y0,y1,fg){
+ const H=y1-y0,t=tile(name,fg);if(!t)return{def:'',body:''};
+ const s=H/10;
+ return{def:`<pattern id="${id}" patternUnits="userSpaceOnUse" x="0" y="${y0}" width="${f(t.w*s)}" height="${f(H)}"><g transform="scale(${f(s*1000)/1000})">${t.g}</g></pattern>`,
+  body:`<rect x="0" y="${y0}" width="200" height="${H}" fill="url(#${id})"/>`};
+}
+function lines(y0,y1,c){return `<path d="M0,${y0}H200M0,${y1}H200" stroke="${c}" stroke-width="1.6"/>`}
+
+function owl(cx,cy,S,fg,dt){const k=S/100;return `<g transform="translate(${f(cx)},${f(cy)}) scale(${f(k*100)/100})">
+<path d="M-42,46H42" stroke="${fg}" stroke-width="4" stroke-linecap="round"/>
+<path d="M-46,46C-54,38 -60,40 -66,34M46,46C54,40 60,42 66,36" stroke="${fg}" stroke-width="2.5" fill="none"/>
+<ellipse cx="-62" cy="32" rx="7" ry="3" transform="rotate(-30 -62 32)" fill="${fg}"/><ellipse cx="62" cy="34" rx="7" ry="3" transform="rotate(30 62 34)" fill="${fg}"/>
+<ellipse cx="0" cy="10" rx="27" ry="34" fill="${fg}"/><ellipse cx="0" cy="-27" rx="24" ry="20" fill="${fg}"/>
+<path d="M-22,-38L-15,-50L-11,-38ZM22,-38L15,-50L11,-38Z" fill="${fg}"/>
+<circle cx="-10" cy="-28" r="9" fill="${dt}"/><circle cx="10" cy="-28" r="9" fill="${dt}"/><circle cx="-10" cy="-28" r="4" fill="${fg}"/><circle cx="10" cy="-28" r="4" fill="${fg}"/>
+<path d="M-3,-19H3L0,-12Z" fill="${dt}"/>
+<path d="M-21,-2C-17,18 -11,31 -4,40M21,-2C17,18 11,31 4,40" stroke="${dt}" stroke-width="2.2" fill="none"/>
+<path d="M-9,6q4,4 8,0M1,6q4,4 8,0M-5,16q4,4 8,0" stroke="${dt}" stroke-width="1.8" fill="none"/>
+<path d="M-8,44v6M-4,44v6M4,44v6M8,44v6" stroke="${fg}" stroke-width="2.4"/></g>`}
+function olive(cx,cy,S,fg,dt){const k=S/40;let g=`<path d="M-90,8C-40,-6 30,10 90,-6" stroke="${fg}" stroke-width="3" fill="none"/>`;
+ for(let i=-8;i<=8;i++){const x=i*10.5,y=8-(i+8)*0.9+(i%2?-1:1)*1,up=i%2?-1:1;g+=`<ellipse cx="${f(x+3)}" cy="${f(y+up*7)}" rx="10" ry="3.6" transform="rotate(${up*-28} ${f(x+3)} ${f(y+up*7)})" fill="${fg}"/>`;if(i%3===0)g+=`<circle cx="${f(x-2)}" cy="${f(y-up*6)}" r="3.6" fill="${fg}"/><circle cx="${f(x-3)}" cy="${f(y-up*6-1.2)}" r="1" fill="${dt}"/>`}
+ return `<g transform="translate(${f(cx)},${f(cy)}) scale(${f(k*100)/100})">${g}</g>`}
+function horses(cx,cy,S,fg){const k=S/50;const one=x=>`<g transform="translate(${x},0)"><path d="M-14,-4H14L10,2H-10Z" fill="${fg}"/><path d="M12,-4L18,-18M-12,2L-15,16M-8,2L-8,16M8,2L9,16M11,2L15,16M-14,-3L-20,10" stroke="${fg}" stroke-width="2.6" stroke-linecap="round" fill="none"/><path d="M15,-21L25,-16L23,-13L17,-15Z" fill="${fg}"/></g>`;
+ return `<g transform="translate(${f(cx)},${f(cy)}) scale(${f(k*100)/100})">${one(-46)}${one(0)}${one(46)}<path d="M-70,18H70" stroke="${fg}" stroke-width="2"/></g>`}
+
+function hwOf(sh,y){const p=sh.pts;for(let i=0;i<p.length-1;i++){if(y>=p[i][1]&&y<=p[i+1][1]){const t=(y-p[i][1])/(p[i+1][1]-p[i][1]);return p[i][0]+t*(p[i+1][0]-p[i][0])}}return 20}
+let uid=0;
+function vase(cfg,opt={}){
+ const sh=SH[cfg.shape],P=PAL[cfg.style],id='v'+(uid++),d=bodyD(sh);
+ let defs=`<clipPath id="${id}c"><path d="${d}"/></clipPath><linearGradient id="${id}g" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".38" stop-color="#fff" stop-opacity="0"/><stop offset=".72" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".38"/></linearGradient>`;
+ let inner=`<rect width="200" height="300" fill="${P.body}"/>`;
+ if(P.zone){inner+=`<rect width="200" height="${sh.rim}" fill="${P.zone}"/><rect y="${sh.foot}" width="200" height="${300-sh.foot}" fill="${P.zone}"/>`}
+ const slots={neck:cfg.neck,shoulder:cfg.shoulder,base:cfg.base};
+ for(const k in slots){const r=sh.b[k];if(!r||!slots[k]||slots[k]==='nessuno')continue;const b=band(id+k,slots[k],r[0],r[1],P.fig);defs+=b.def;inner+=b.body+lines(r[0],r[1],P.fig)}
+ if(cfg.style==='geo'){for(const k in sh.b){const r=sh.b[k];if(r)inner+=`<path d="M0,${r[0]-4}H200M0,${r[1]+4}H200" stroke="${P.fig}" stroke-width="1"/>`}}
+ const fr=sh.b.frieze;
+ if(fr&&cfg.frieze&&cfg.frieze!=='nessuno'){
+  const H=fr[1]-fr[0],cy=(fr[0]+fr[1])/2;inner+=lines(fr[0],fr[1],P.fig);
+  const W=2*Math.min(hwOf(sh,fr[0]+H*0.25),hwOf(sh,fr[1]-H*0.25));
+  if(cfg.frieze==='civetta')inner+=owl(100,cy-H*0.02,Math.min(H*0.86,110,100*W*0.92/132),P.fig,P.det);
+  else if(cfg.frieze==='ulivo')inner+=olive(100,cy,Math.min(H*0.7,46,40*W*0.95/180),P.fig,P.det);
+  else if(cfg.frieze==='cavalli')inner+=horses(100,cy,Math.min(H*0.9,62,50*W*0.9/140),P.fig);
+  else{const m=fr[0]+H*0.2,n=fr[1]-H*0.2,b=band(id+'f',cfg.frieze,m,n,P.fig);defs+=b.def;inner+=b.body}
+ }
+ inner+=`<rect width="200" height="300" fill="url(#${id}g)"/>`;
+ const hs=sh.h.map(p=>`<path d="${p}"/><path d="${p}" transform="translate(200,0) scale(-1,1)"/>`).join('')+sh.s.map(p=>`<path d="${p}"/>`).join('')+sh.l.map(p=>`<path d="${p}"/>`).join('');
+ const shadow=opt.noShadow?'':`<ellipse cx="100" cy="${sh.pts[sh.pts.length-1][1]+4}" rx="${sh.pts[sh.pts.length-1][0]*1.9}" ry="5" fill="#000" opacity=".28"/>`;
+ return `<defs>${defs}</defs>${shadow}<g fill="none" stroke="${P.out}" stroke-width="9" stroke-linecap="round">${hs}</g><g fill="none" stroke="${P.handle}" stroke-width="6" stroke-linecap="round">${hs}</g><g clip-path="url(#${id}c)">${inner}</g><path d="${d}" fill="none" stroke="${P.out}" stroke-width="1.6"/>`;
+}
+
+const $=s=>document.getElementById(s);
+const heroCfg={shape:'anfora',style:'nere',neck:'meandro',shoulder:'linguette',frieze:'civetta',base:'raggi'};
+$('heroVase').innerHTML=vase(heroCfg);
+
+const ms=$('meanderStrip');
+const drawStrip=()=>{const W=ms.clientWidth||1000,H=30,s=H/10;let p='';for(let x=0;x<W+20;x+=10*s){p+=`M${f(x+1*s)},${f(9.2*s)}V${f(1*s)}H${f(x+8*s)}V${f(7*s)}H${f(x+4*s)}V${f(4*s)}H${f(x+6*s)}`}ms.setAttribute('viewBox',`0 0 ${W} ${H}`);ms.innerHTML=`<path d="M0,${f(9.2*s)}H${W}${p}" fill="none" stroke="#d4692f" stroke-width="${f(1.3*s)}"/>`};
+const roStrip=new ResizeObserver(drawStrip);roStrip.observe(ms);
+
+const an=SH.anfora;
+const hwAt=y=>{const p=an.pts;for(let i=0;i<p.length-1;i++){if(y>=p[i][1]&&y<=p[i+1][1]){const t=(y-p[i][1])/(p[i+1][1]-p[i][1]);return p[i][0]+t*(p[i+1][0]-p[i][0])}}return 20};
+const marks=[[1,null,18],[2,null,44],[3,[160,58]],[4,null,94],[5,null,142],[6,null,274]];
+$('anatomy').innerHTML=vase({shape:'anfora',style:'nere',neck:'meandro',shoulder:'linguette',frieze:'civetta',base:'raggi'})+marks.map(m=>{const x=m[1]?m[1][0]:100-hwAt(m[2])-16,y=m[1]?m[1][1]:m[2];return `<circle cx="${f(x)}" cy="${y}" r="9" fill="#1f5fbf" stroke="#fff" stroke-width="2"/><text x="${f(x)}" y="${y+4}" text-anchor="middle" font-size="11" font-weight="800" fill="#fff" font-family="Nunito,sans-serif">${m[0]}</text>`}).join('');
+
+$('forms').innerHTML=Object.entries(SH).map(([k,s])=>`<article class="form"><svg viewBox="0 0 200 300" aria-hidden="true">${vase({shape:k,style:'nere',neck:'meandro',shoulder:'linguette',frieze:'nessuno',base:'raggi'})}</svg><h3>${s.n}</h3><div class="pr">si legge: ${s.pr}</div><span class="tag">${s.cat}</span><p>${s.use}</p><button class="btn" type="button" data-try="${k}">Prova a disegnarlo</button></article>`).join('');
+
+const eras=[
+ {c:'e1',when:'IX–VIII secolo a.C.',t:'Stile geometrico',p:'Il periodo più antico. Il vaso è coperto di fasce con linee, triangoli, rombi e meandri. Anche uomini e animali sono fatti di forme geometriche: triangoli per il corpo, bastoncini per le gambe.',cfg:{shape:'anfora',style:'geo',neck:'zigzag',shoulder:'rombi',frieze:'cavalli',base:'scacchi'}},
+ {c:'e2',when:'VII–VI secolo a.C.',t:'Figure nere',p:'Nasce a Corinto e poi diventa famoso ad Atene. Le figure sono nere sul fondo arancione dell’argilla; i dettagli sono graffiati con una punta.',cfg:{shape:'anfora',style:'nere',neck:'meandro',shoulder:'linguette',frieze:'civetta',base:'raggi'}},
+ {c:'e3',when:'dal 530 a.C. circa',t:'Figure rosse',p:'Inventata ad Atene. Si dipinge di nero lo sfondo e le figure restano del colore dell’argilla: così si possono disegnare meglio volti, muscoli e vestiti.',cfg:{shape:'cratere',style:'rosse',neck:'onde',shoulder:'nessuno',frieze:'civetta',base:'meandro'}}
+];
+$('timeline').innerHTML=eras.map(e=>`<article class="era ${e.c}"><svg viewBox="0 0 200 300" aria-hidden="true">${vase(e.cfg,{noShadow:true})}</svg><span class="when">${e.when}</span><h3>${e.t}</h3><p>${e.p}</p></article>`).join('');
+
+$('decos').innerHTML=Object.entries(PAT).map(([k,p],i)=>{const b=band('dd'+i,k,4,42,'#17100c');return `<div class="deco"><svg viewBox="0 0 200 46" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>${b.def}</defs><rect width="200" height="46" fill="#d4692f"/>${b.body}${lines(4,42,'#17100c')}</svg><h3>${p.n}</h3><p>${p.d}</p></div>`}).join('');
+
+const mz=$('mzGrid');
+const mzSteps=[
+ {t:'Passo 1. Lascia un quadretto di margine e traccia due righe parallele, distanti 7 quadretti: sono i bordi della fascia.',d:'M1,1H25M1,8H25'},
+ {t:'Passo 2. Un quadretto sopra la riga di sotto, traccia la linea di base per tutta la lunghezza.',d:'M1,7H25'},
+ {t:'Passo 3. Dalla base sali dritto per 5 quadretti, poi vai a destra di 4.',d:'M2,7V2H6'},
+ {t:'Passo 4. Scendi di 4, torna a sinistra di 2, risali di 2 e vai a destra di 1: il primo uncino è fatto!',d:'M6,2V6H4V4H5'},
+ {t:'Passo 5. Ripeti lo stesso uncino ogni 5 quadretti fino alla fine della fascia. Poi ripassa con il pennarello nero.',d:''}
+];
+let mzN=0;
+const mzDraw=()=>{const cols=26,rows=9,W=mz.clientWidth||520,c=W/cols,H=c*rows;mz.setAttribute('viewBox',`0 0 ${f(W)} ${f(H)}`);mz.style.height=f(H)+'px';
+ let g='';for(let i=0;i<=cols;i++)g+=`M${f(i*c)},0V${f(H)}`;for(let j=0;j<=rows;j++)g+=`M0,${f(j*c)}H${f(W)}`;
+ let path='';for(let i=0;i<mzN;i++){if(i<4)path+=mzSteps[i].d;else for(let x=7;x<=22;x+=5)path+=`M${x},7V2H${x+4}V6H${x+2}V4H${x+3}`}
+ mz.innerHTML=`<path d="${g}" stroke="#bcd3ef" stroke-width="1" fill="none"/><path d="${path}" transform="scale(${f(c*100)/100})" fill="none" stroke="#17100c" stroke-width="${f(0.22*100)/100}" stroke-linecap="square"/>`;
+ $('mzNote').textContent=mzN===0?'Premi “Passo successivo” e segui le istruzioni sul tuo quaderno.':mzSteps[mzN-1].t;
+ $('mzNext').disabled=mzN>=mzSteps.length};
+const roMz=new ResizeObserver(mzDraw);roMz.observe(mz);
+$('mzNext').onclick=()=>{if(mzN<mzSteps.length){mzN++;mzDraw()}};
+$('mzReset').onclick=()=>{mzN=0;mzDraw()};
+
+const d=bodyD(an),half=halfD(an),guides=[18,40,82,135,205,282];
+const axis=`<path d="M100,6V294" stroke="#1f5fbf" stroke-width="1.4" stroke-dasharray="6 5"/>`;
+const gl=guides.map(y=>`<path d="M30,${y}H170" stroke="#9db8e0" stroke-width="1" stroke-dasharray="3 4"/>`).join('')+`<rect x="34" y="18" width="132" height="264" fill="none" stroke="#9db8e0" stroke-width="1" stroke-dasharray="3 4"/>`;
+const handles=an.h.map(p=>`<path d="${p}"/><path d="${p}" transform="translate(200,0) scale(-1,1)"/>`).join('');
+const bandL=Object.values(an.b).filter(Boolean).map(r=>`<path d="M0,${r[0]}H200M0,${r[1]}H200"/>`).join('');
+const stepData=[
+ ['L’asse di simmetria','Piega il foglio a metà o traccia con il righello una linea verticale al centro. Tutto il vaso si costruisce intorno a questa linea.',axis],
+ ['Le linee guida','Segna con linee leggere l’altezza della bocca, del collo, della spalla, del ventre e del piede. Disegna un rettangolo che contiene tutto il vaso.',axis+gl],
+ ['Metà sagoma','Disegna solo la metà destra del profilo: stretto al collo, largo al ventre, di nuovo stretto vicino al piede.',axis+gl+`<path d="${half}" fill="none" stroke="#17100c" stroke-width="2.4"/>`],
+ ['L’altra metà','Ricalcala piegando il foglio, oppure misura con il righello quanto ogni punto dista dall’asse e riportalo dall’altra parte.',axis+gl+`<path d="${d}" fill="none" stroke="#17100c" stroke-width="2.4"/>`],
+ ['Anse e fasce','Aggiungi le anse, uguali a destra e a sinistra. Traccia le righe orizzontali delle fasce decorative e cancella le linee guida.',`<g fill="none" stroke="#17100c" stroke-width="5" stroke-linecap="round">${handles}</g><path d="${d}" fill="#fff" stroke="#17100c" stroke-width="2.4"/><g clip-path="url(#stc)" stroke="#17100c" stroke-width="1.4">${bandL}</g><defs><clipPath id="stc"><path d="${d}"/></clipPath></defs>`],
+ ['Decora e colora','Colora il fondo di arancione (arancio con un po’ di marrone), poi riempi le fasce e la scena in nero. Con lo stuzzicadenti graffia i dettagli, come facevano i pittori greci.',vase(heroCfg,{noShadow:true})]
+];
+$('steps').innerHTML=stepData.map(s=>`<article class="step"><svg viewBox="0 0 200 300" aria-hidden="true">${s[2]}</svg><h3>${s[0]}</h3><p>${s[1]}</p></article>`).join('');
+
+const DEF={shape:'anfora',style:'nere',neck:'meandro',shoulder:'linguette',frieze:'civetta',base:'raggi'};
+let cfg={...DEF};
+const STY={geo:'Geometrico',nere:'Figure nere',rosse:'Figure rosse'};
+$('cShape').innerHTML=Object.entries(SH).map(([k,s])=>`<button type="button" data-shape="${k}">${s.n}</button>`).join('');
+$('cStyle').innerHTML=Object.entries(STY).map(([k,s])=>`<button type="button" data-style="${k}">${s}</button>`).join('');
+const opts=o=>Object.entries(o).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
+const PO={...Object.fromEntries(Object.entries(PAT).map(([k,p])=>[k,p.n])),nessuno:'nessuna'};
+['sNeck','sShoulder','sBase'].forEach(i=>$(i).innerHTML=opts(PO));
+$('sFrieze').innerHTML=opts(MOT);
+const slotSel={neck:'sNeck',shoulder:'sShoulder',frieze:'sFrieze',base:'sBase'};
+const nm=k=>(PO[k]||MOT[k]||'').toLowerCase();
+function renderLab(){
+ const sh=SH[cfg.shape];
+ document.querySelectorAll('#cShape button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.shape===cfg.shape));
+ document.querySelectorAll('#cStyle button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.style===cfg.style));
+ for(const k in slotSel){const el=$(slotSel[k]);el.value=cfg[k];el.disabled=!sh.b[k]}
+ $('labVase').innerHTML=vase(cfg);
+ const parts=[];
+ if(sh.b.neck&&cfg.neck!=='nessuno')parts.push(`collo: ${nm(cfg.neck)}`);
+ if(sh.b.shoulder&&cfg.shoulder!=='nessuno')parts.push(`spalla: ${nm(cfg.shoulder)}`);
+ if(sh.b.base&&cfg.base!=='nessuno')parts.push(`in basso: ${nm(cfg.base)}`);
+ const sc=sh.b.frieze&&cfg.frieze!=='nessuno'?`, con ${MOT[cfg.frieze]} sul ventre`:'';
+ $('scheda').innerHTML=`<b>Scheda del progetto</b><br>${sh.n} ${PAL[cfg.style].label}${sc}.<br>Fasce decorative: ${parts.length?parts.join(' · '):'nessuna'}.<br><span style="color:var(--soft);font-size:15px">Colori: ${cfg.style==='rosse'?'fondo nero, figure e decorazioni arancioni':cfg.style==='nere'?'fondo arancione, figure e decorazioni nere':'fondo color argilla chiara, decorazioni marrone scuro'}.</span>`;
+}
+$('cShape').onclick=e=>{const b=e.target.closest('[data-shape]');if(b){cfg.shape=b.dataset.shape;renderLab()}};
+$('cStyle').onclick=e=>{const b=e.target.closest('[data-style]');if(b){cfg.style=b.dataset.style;renderLab()}};
+for(const k in slotSel)$(slotSel[k]).onchange=e=>{cfg[k]=e.target.value;renderLab()};
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+$('rand').onclick=()=>{const pk=Object.keys(PAT);cfg={shape:pick(Object.keys(SH)),style:pick(Object.keys(STY)),neck:pick(pk),shoulder:pick(pk),frieze:pick(['civetta','ulivo','cavalli','meandro','onde']),base:pick(pk)};renderLab()};
+$('labReset').onclick=()=>{cfg={...DEF};renderLab()};
+$('forms').onclick=e=>{const b=e.target.closest('[data-try]');if(b){cfg.shape=b.dataset.try;renderLab();$('laboratorio').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}};
+renderLab();
+
+const Q=[
+ ['Come si chiama il vaso con tre anse che serviva per prendere l’acqua?',['Hydria','Anfora','Kylix'],0],
+ ['Nella tecnica a figure nere…',['le figure sono nere sul fondo arancione','il vaso è tutto nero e le figure restano arancioni','le figure sono incollate sul vaso'],0],
+ ['In quale città nacque la tecnica a figure rosse, verso il 530 a.C.?',['Sparta','Atene','Roma'],1],
+ ['A che cosa serviva il cratere?',['A conservare i profumi','A cuocere il pane','A mescolare il vino con l’acqua'],2],
+ ['La decorazione che gira sempre ad angolo retto si chiama…',['linguetta','meandro','palmetta'],1],
+ ['Il periodo più antico, con triangoli, rombi e animali fatti di linee, si chiama…',['stile geometrico','stile a figure rosse','stile romano'],0],
+ ['Da dove conviene partire per disegnare un vaso simmetrico?',['Dalle anse','Dai colori','Da un asse verticale al centro del foglio'],2]
+];
+let right=0,done=0;
+const upd=()=>$('score').textContent=right+' / '+done;
+function quiz(){
+ $('quiz').innerHTML=Q.map((q,i)=>`<div class="q"><p class="s">${i+1}. ${q[0]}</p><div class="opts">${q[1].map((o,j)=>`<button type="button" data-i="${i}" data-j="${j}">${o}</button>`).join('')}</div><p class="fb" id="fb${i}"></p></div>`).join('');
+}
+$('quiz').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;const i=+b.dataset.i,j=+b.dataset.j,ok=Q[i][2]===j,row=b.parentElement,fb=$('fb'+i);
+ row.querySelectorAll('button').forEach((x,k)=>{x.disabled=true;if(k===Q[i][2])x.classList.add('right')});if(!ok)b.classList.add('wrong');
+ fb.className='fb '+(ok?'good':'bad');fb.textContent=ok?'Esatto!':'Non proprio: la risposta giusta è in verde.';done++;if(ok)right++;upd()};
+$('qReset').onclick=()=>{right=0;done=0;upd();quiz()};
+quiz();upd();
+}
+</script>
+</body>
+</html>
